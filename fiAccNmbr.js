@@ -21,6 +21,7 @@ FinnishBankAccountNumber.prototype.toLong = function() {
         if (calculateChecksum(accNumberMachineForm) == accNumberMachineForm.substr(accNumberMachineForm.length - 1)) {
             console.log("Account number " + this.accNumber + " is valid");
             console.log("In machine form " + accNumberMachineForm + " checksum: " + calculateChecksum(accNumberMachineForm) + " matches the last digit");
+            return "In machine form " + accNumberMachineForm + " checksum: " + calculateChecksum(accNumberMachineForm) + " matches the last digit";
         } else {
             console.log("Invalid account number " + this.accNumber);
             console.log("Checksum: " + calculateChecksum(accNumberMachineForm) + " does not match the last digit");
@@ -60,5 +61,8 @@ function calculateChecksum(numberToCheck) {
     return total;
 }
 
-var numberToConvert = new FinnishBankAccountNumber("123456-785");
-numberToConvert.toLong();
+function displayMessage() {
+    var numberToConvert = new FinnishBankAccountNumber(document.getElementById('userInput').value);
+    document.getElementById('message').innerHTML = numberToConvert.toLong();
+
+}
