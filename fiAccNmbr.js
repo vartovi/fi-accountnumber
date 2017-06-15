@@ -1,12 +1,13 @@
 var message = "";
 
+// Construction function
 function FinnishBankAccountNumber(userInput) {
     this.accNumber = userInput;
 }
 
 // Function to convert traditional Finnish bank account number to machine form.
-// Function first checks if number is in proper form (no letters, dash in right place, correct length).
-// If number is correct, dash is removed and zeros added after 6th or 7th number depending on first digit.
+// Function first checks if number is in proper form (no letters, dash in the right place, correct length).
+// If number is correct, dash is removed and zeros added after 6th or 7th number depending on the first digit.
 // Function also checks if numbers checksum is correct using calculateChecksum-function and writes a message depending on result.
 FinnishBankAccountNumber.prototype.toLong = function() {
     if (!this.accNumber.replace('-', '').match(/^\d+$/)) {
@@ -43,7 +44,8 @@ FinnishBankAccountNumber.prototype.toLong = function() {
 }
 
 // Function gets account number length as parameter and substracts it from 14 to get target number of zeros needed.
-// For loop then adds the zeros to a string variable and returns it.
+// For loop then adds the zeros to a string variable.
+// Returns string of 0-6 zeros
 function addZeros(len) {
 
     var target = 14 - len;
@@ -56,7 +58,7 @@ function addZeros(len) {
 }
 
 // Function to calculate checksum using Luhn-algorithm.
-// Function splits machineform account numbers into array, then starting from second rightmost number doubles every other value and adds numbers of those values together
+// Function splits machineform account number into array, then starting from second rightmost number doubles every other value and adds numbers of those values together
 // Total is then substracted from next even ten.
 function calculateChecksum(numberToCheck) {
 
@@ -76,7 +78,7 @@ function calculateChecksum(numberToCheck) {
             total = total + Number(numArray[i]);
         }
     }
-    // If the result from substracting from next even ten would be 10 (ie. 40-30) then set checksum to 0
+    // If the result from substracting from the next even ten would be 10 (ie. 40-30) then set checksum to 0
     if (total % 10 == 0) {
         total = 0;
     } else {
