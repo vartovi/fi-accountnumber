@@ -1,3 +1,5 @@
+var message = "";
+
 function FinnishBankAccountNumber(userInput) {
     this.accNumber = userInput;
 }
@@ -5,8 +7,9 @@ function FinnishBankAccountNumber(userInput) {
 FinnishBankAccountNumber.prototype.toLong = function() {
     if (this.accNumber.indexOf('-') != 6 || this.accNumber.length > 15 || this.accNumber.length < 9) {
 
-        var error = "Invalid account number. Proper account number is 8-14 numbers long and contains dash after first 6 numbers";
-        console.log(error);
+        message = "Invalid account number. Proper account number is 8-14 numbers long and contains dash after first 6 numbers";
+        return false;
+
     } else {
 
         var accNumberMachineForm = this.accNumber.replace('-', '');
@@ -18,17 +21,18 @@ FinnishBankAccountNumber.prototype.toLong = function() {
             accNumberMachineForm = accNumberMachineForm.substr(0, 6) + addZeros(accNumberLength) + accNumberMachineForm.substr(6);
         }
 
-        if (calculateChecksum(accNumberMachineForm) == accNumberMachineForm.substr(accNumberMachineForm.length - 1)) {
-            console.log("Account number " + this.accNumber + " is valid");
-            console.log("In machine form " + accNumberMachineForm + " checksum: " + calculateChecksum(accNumberMachineForm) + " matches the last digit");
-            return "In machine form " + accNumberMachineForm + " checksum: " + calculateChecksum(accNumberMachineForm) + " matches the last digit";
+        var checksum = calculateChecksum(accNumberMachineForm);
+
+        if (checksum == accNumberMachineForm.substr(accNumberMachineForm.length - 1)) {
+            message = "<br>Account number is <b>valid</b>. Checksum <b>" + checksum + "</b> matches the last digit.";
         } else {
-            console.log("Invalid account number " + this.accNumber);
-            console.log("Checksum: " + calculateChecksum(accNumberMachineForm) + " does not match the last digit");
+            message = "<br>Account number is <b>invalid</b>. Checksum <b>" + checksum + "</b> does not match the last digit.";
         }
 
+        return accNumberMachineForm;
     }
 }
+
 
 function addZeros(len) {
 
@@ -50,19 +54,29 @@ function calculateChecksum(numberToCheck) {
         if (i % 2 == 0) {
             if ((numArray[i] * 2) > 9) {
                 total = total + 1 + Number(numArray[i] * 2) % 10;
+
             } else {
                 total = total + Number(numArray[i]) * 2;
+
             }
         } else {
             total = total + Number(numArray[i]);
         }
     }
-    total = 10 - total % 10;
+    if (total % 10 == 0) {
+        total = 0;
+    } else {
+        total = 10 - total % 10;
+    }
     return total;
 }
 
-function displayMessage() {
+function convertToMachineForm() {
     var numberToConvert = new FinnishBankAccountNumber(document.getElementById('userInput').value);
-    document.getElementById('message').innerHTML = numberToConvert.toLong();
+    if (numberToConvert.toLong()) {
+        document.getElementById('message').innerHTML = "Account number <b>" + numberToConvert.accNumber + "</b> in machine form is: <b>" + numberToConvert.toLong() + "</b>" + message;
+    } else {
+        document.getElementById('message').innerHTML = message;
+    }
 
 }

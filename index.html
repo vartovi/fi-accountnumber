@@ -3,15 +3,21 @@
 
 <head>
     <title>Finnish account number</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
+<style>
+    html,
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+</style>
 
 <body>
-
     <div>
+        <h4>Input Finnish account number to convert it to machine form</h4>
         <input type="text" name="userInput" value="" id="userInput">
-        <input type="button" name="convertToLong" value="Convert to machine form" onclick="displayMessage()">
-    </div>
-    <div>
+        <input type="button" name="convertToLong" value="Convert to machine form" onclick="convertToMachineForm()">
         <p id="message"></p>
     </div>
 
